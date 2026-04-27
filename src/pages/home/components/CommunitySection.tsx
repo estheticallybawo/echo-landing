@@ -11,6 +11,20 @@ type FirestoreComment = {
   createdAt?: Timestamp;
 };
 
+type UiComment = {
+  id: string | number;
+  name: string;
+  role: string;
+  initials: string;
+  gradient: string;
+  avatar: string | null;
+  time: string;
+  text: string;
+};
+
+const hasRenderableContent = (row: FirestoreComment) =>
+  Boolean(row?.name?.trim()) && Boolean(row?.message?.trim());
+
 const getInitials = (name: string) =>
   name
     .trim()
@@ -35,7 +49,7 @@ const formatTimeAgo = (isoDate: string) => {
   return `${diffDays}d ago`;
 };
 
-const mapFirestoreCommentToUi = (id: string, row: FirestoreComment) => ({
+const mapFirestoreCommentToUi = (id: string, row: FirestoreComment): UiComment => ({
   id,
   name: row.name,
   role: row.role || '',
@@ -46,7 +60,7 @@ const mapFirestoreCommentToUi = (id: string, row: FirestoreComment) => ({
   text: row.message || '',
 });
 
-const initialComments = [
+const initialComments: UiComment[] = [
   {
     id: 1,
     name: 'Amara Diallo',
@@ -100,7 +114,7 @@ const initialComments = [
 ];
 
 const CommunitySection = () => {
-  const [comments, setComments] = useState(initialComments);
+  const [comments, setComments] = useState<UiComment[]>(initialComments);
   const [inputValue, setInputValue] = useState('');
   const [name, setName] = useState('');
   const [role, setRole] = useState('');
@@ -132,13 +146,22 @@ const CommunitySection = () => {
       limit(100),
     );
 
-    const unsubscribe = onSnapshot(commentsQuery, (snapshot) => {
-      const liveComments = snapshot.docs.map((doc) =>
-        mapFirestoreCommentToUi(doc.id, doc.data() as FirestoreComment),
-      );
-      setComments(liveComments);
-      setIsLoadingComments(false);
-    });
+    const unsubscribe = onSnapshot(
+      commentsQuery,
+      (snapshot) => {
+        const liveComments = snapshot.docs
+          .map((doc) => ({ id: doc.id, row: doc.data() as FirestoreComment }))
+          .filter((item) => hasRenderableContent(item.row))
+          .map((item) => mapFirestoreCommentToUi(item.id, item.row));
+        setComments(liveComments.length > 0 ? liveComments : initialComments);
+        setIsLoadingComments(false);
+      },
+      (error) => {
+        console.error('Failed to read Firestore comments:', error);
+        setIsLoadingComments(false);
+        setSubmitError('Unable to read comments. Check Firestore rules.');
+      },
+    );
 
     return () => {
       unsubscribe();
@@ -151,22 +174,7 @@ const CommunitySection = () => {
     setSubmitError('');
 
     if (!hasFirebase || !firebaseDb) {
-      const newComment = {
-        id: Date.now(),
-        name: name.trim(),
-        role: role.trim(),
-        initials: getInitials(name.trim()),
-        gradient: 'from-[#2060C6] to-[#0DC298]',
-        avatar: avatarPreview || null,
-        time: 'Just now',
-        text: inputValue.trim(),
-      };
-      setComments((prev) => [newComment, ...prev]);
-      setInputValue('');
-      setName('');
-      setRole('');
-      setAvatarPreview(null);
-      if (fileInputRef.current) fileInputRef.current.value = '';
+      setSubmitError('Firebase is not connected. This comment cannot be saved yet.');
       return;
     }
 
@@ -178,8 +186,17 @@ const CommunitySection = () => {
         avatarUrl: avatarPreview || '',
         createdAt: serverTimestamp(),
       });
-    } catch {
-      setSubmitError('Could not post your comment right now. Please try again.');
+    } catch (error) {
+      console.error('Failed to write Firestore comment:', error);
+      const code =
+        error && typeof error === 'object' && 'code' in error
+          ? String((error as { code?: unknown }).code)
+          : '';
+      if (code.includes('permission-denied')) {
+        setSubmitError('Write blocked by Firestore rules. Allow create on communityComments.');
+      } else {
+        setSubmitError('Could not post your comment right now. Please try again.');
+      }
       return;
     }
 
