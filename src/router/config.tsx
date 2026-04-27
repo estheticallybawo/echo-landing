@@ -1,15 +1,25 @@
 import type { RouteObject } from "react-router-dom";
-import NotFound from "../pages/NotFound";
-import Home from "../pages/home/page";
+import { Suspense, lazy } from "react";
+
+const NotFound = lazy(() => import("../pages/NotFound"));
+const Home = lazy(() => import("../pages/home/page"));
 
 const routes: RouteObject[] = [
   {
     path: "/",
-    element: <Home />,
+    element: (
+      <Suspense fallback={null}>
+        <Home />
+      </Suspense>
+    ),
   },
   {
     path: "*",
-    element: <NotFound />,
+    element: (
+      <Suspense fallback={null}>
+        <NotFound />
+      </Suspense>
+    ),
   },
 ];
 

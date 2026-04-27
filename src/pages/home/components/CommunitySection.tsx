@@ -1,5 +1,50 @@
-import { useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
+import { addDoc, collection, limit, onSnapshot, orderBy, query, serverTimestamp, Timestamp } from 'firebase/firestore';
+import { firebaseDb, hasFirebase } from '@/lib/firebase';
+
+type FirestoreComment = {
+  name: string;
+  role: string;
+  message: string;
+  avatarUrl: string;
+  createdAt?: Timestamp;
+};
+
+const getInitials = (name: string) =>
+  name
+    .trim()
+    .split(' ')
+    .filter(Boolean)
+    .map((n) => n[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2);
+
+const formatTimeAgo = (isoDate: string) => {
+  const diffMs = Date.now() - new Date(isoDate).getTime();
+  const diffMinutes = Math.floor(diffMs / 60000);
+
+  if (diffMinutes < 1) return 'Just now';
+  if (diffMinutes < 60) return `${diffMinutes} min ago`;
+
+  const diffHours = Math.floor(diffMinutes / 60);
+  if (diffHours < 24) return `${diffHours}h ago`;
+
+  const diffDays = Math.floor(diffHours / 24);
+  return `${diffDays}d ago`;
+};
+
+const mapFirestoreCommentToUi = (id: string, row: FirestoreComment) => ({
+  id,
+  name: row.name,
+  role: row.role || '',
+  initials: getInitials(row.name || ''),
+  gradient: 'from-[#2060C6] to-[#0DC298]',
+  avatar: row.avatarUrl || null,
+  time: row.createdAt ? formatTimeAgo(row.createdAt.toDate().toISOString()) : 'Just now',
+  text: row.message || '',
+});
 
 const initialComments = [
   {
@@ -60,6 +105,8 @@ const CommunitySection = () => {
   const [name, setName] = useState('');
   const [role, setRole] = useState('');
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const [submitError, setSubmitError] = useState('');
+  const [isLoadingComments, setIsLoadingComments] = useState(hasFirebase);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -73,25 +120,69 @@ const CommunitySection = () => {
   const header = useScrollAnimation();
   const feed = useScrollAnimation({ rootMargin: '0px 0px -40px 0px' });
 
-  const handleSubmit = () => {
-    if (!inputValue.trim() || !name.trim()) return;
-    const newComment = {
-      id: Date.now(),
-      name: name.trim(),
-      role: role.trim(),
-      initials: name
-        .trim()
-        .split(' ')
-        .map((n) => n[0])
-        .join('')
-        .toUpperCase()
-        .slice(0, 2),
-      gradient: 'from-[#2060C6] to-[#0DC298]',
-      avatar: avatarPreview || null,
-      time: 'Just now',
-      text: inputValue.trim(),
+  useEffect(() => {
+    if (!hasFirebase || !firebaseDb) {
+      setIsLoadingComments(false);
+      return;
+    }
+
+    const commentsQuery = query(
+      collection(firebaseDb, 'communityComments'),
+      orderBy('createdAt', 'desc'),
+      limit(100),
+    );
+
+    const unsubscribe = onSnapshot(commentsQuery, (snapshot) => {
+      const liveComments = snapshot.docs.map((doc) =>
+        mapFirestoreCommentToUi(doc.id, doc.data() as FirestoreComment),
+      );
+      setComments(liveComments);
+      setIsLoadingComments(false);
+    });
+
+    return () => {
+      unsubscribe();
     };
-    setComments([newComment, ...comments]);
+  }, []);
+
+  const handleSubmit = async () => {
+    if (!inputValue.trim() || !name.trim()) return;
+
+    setSubmitError('');
+
+    if (!hasFirebase || !firebaseDb) {
+      const newComment = {
+        id: Date.now(),
+        name: name.trim(),
+        role: role.trim(),
+        initials: getInitials(name.trim()),
+        gradient: 'from-[#2060C6] to-[#0DC298]',
+        avatar: avatarPreview || null,
+        time: 'Just now',
+        text: inputValue.trim(),
+      };
+      setComments((prev) => [newComment, ...prev]);
+      setInputValue('');
+      setName('');
+      setRole('');
+      setAvatarPreview(null);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+      return;
+    }
+
+    try {
+      await addDoc(collection(firebaseDb, 'communityComments'), {
+        name: name.trim(),
+        role: role.trim() || '',
+        message: inputValue.trim(),
+        avatarUrl: avatarPreview || '',
+        createdAt: serverTimestamp(),
+      });
+    } catch {
+      setSubmitError('Could not post your comment right now. Please try again.');
+      return;
+    }
+
     setInputValue('');
     setName('');
     setRole('');
@@ -130,13 +221,28 @@ const CommunitySection = () => {
           <div className="flex items-center justify-between px-6 py-4 border-b border-[#0B0F1A]/6">
             <span className="text-[#0B0F1A]/50 text-sm font-medium">Tell us what you think about Echo</span>
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-red-400 animate-pulse block"></span>
-              <span className="text-red-400 text-xs font-medium">Live</span>
+              <span
+                className={`w-2 h-2 rounded-full block ${hasFirebase ? 'bg-red-400 animate-pulse' : 'bg-[#0B0F1A]/25'}`}
+              ></span>
+              <span className={`text-xs font-medium ${hasFirebase ? 'text-red-400' : 'text-[#0B0F1A]/30'}`}>
+                {hasFirebase ? 'Live' : 'Demo'}
+              </span>
             </div>
           </div>
 
+          {!hasFirebase && (
+            <div className="px-6 py-3 border-b border-[#0B0F1A]/6 bg-[#2060C6]/5">
+              <p className="text-[#0B0F1A]/50 text-xs">
+                Connect Firebase to enable public real-time comments across devices.
+              </p>
+            </div>
+          )}
+
           {/* Comments Feed */}
           <div className="max-h-80 overflow-y-auto px-6 py-4 space-y-4">
+            {isLoadingComments && (
+              <p className="text-[#0B0F1A]/35 text-sm">Loading community comments...</p>
+            )}
             {comments.map((comment) => (
               <div key={comment.id} className="flex gap-3">
                 <div className="w-11 h-11 rounded-full flex-shrink-0 mt-0.5 overflow-hidden">
@@ -224,6 +330,7 @@ const CommunitySection = () => {
                 Share
               </button>
             </div>
+            {submitError && <p className="text-red-400 text-xs">{submitError}</p>}
           </div>
         </div>
       </div>

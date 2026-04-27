@@ -93,7 +93,7 @@ const ClosingSection = () => {
                 href="https://whatsapp.com/channel/0029VbDDMu884Om5qL1beh0D"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 bg-[#3B82F6] hover:bg-[#2563EB] text-white font-bold px-10 py-5 rounded-2xl transition-all duration-200 cursor-pointer whitespace-nowrap text-lg"
+                className="inline-flex items-center gap-3 bg-[#0DC298] hover:bg-[#0B9676] text-white font-bold px-10 py-5 rounded-2xl transition-all duration-200 cursor-pointer whitespace-nowrap text-lg"
               >
                 Join the Echo Community
               </a>
