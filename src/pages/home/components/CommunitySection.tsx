@@ -295,20 +295,20 @@ const CommunitySection = () => {
 
           {/* Input Area */}
           <div className="border-t border-[#0B0F1A]/6 px-6 py-4 space-y-3 bg-white">
-            <div className="flex gap-3 items-center">
+            <div className="flex flex-col md:flex-row gap-3 items-center">
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Your name..."
-                className="flex-1 bg-[#F8F9FF] border border-[#0B0F1A]/10 rounded-xl px-4 py-2.5 text-[#0B0F1A] text-sm placeholder-[#0B0F1A]/30 outline-none focus:border-[#0DC298]/40 transition-colors"
+                className="w-full md:flex-1 bg-[#F8F9FF] border border-[#0B0F1A]/10 rounded-xl px-4 py-2.5 text-[#0B0F1A] text-sm placeholder-[#0B0F1A]/30 outline-none focus:border-[#0DC298]/40 transition-colors"
               />
               <input
                 type="text"
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
                 placeholder="What you do... (optional)"
-                className="flex-1 bg-[#F8F9FF] border border-[#0B0F1A]/10 rounded-xl px-4 py-2.5 text-[#0B0F1A] text-sm placeholder-[#0B0F1A]/30 outline-none focus:border-[#0DC298]/40 transition-colors"
+                className="w-full md:flex-1 bg-[#F8F9FF] border border-[#0B0F1A]/10 rounded-xl px-4 py-2.5 text-[#0B0F1A] text-sm placeholder-[#0B0F1A]/30 outline-none focus:border-[#0DC298]/40 transition-colors"
               />
             </div>
             <div className="flex gap-3">
