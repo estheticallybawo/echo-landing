@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { addDoc, collection, limit, onSnapshot, orderBy, query, serverTimestamp, Timestamp } from 'firebase/firestore';
 import { firebaseDb, hasFirebase } from '@/lib/firebase';
@@ -24,6 +24,8 @@ type UiComment = {
 
 const hasRenderableContent = (row: FirestoreComment) =>
   Boolean(row?.name?.trim()) && Boolean(row?.message?.trim());
+
+const MAX_COMMENT_LENGTH = 300;
 
 const getInitials = (name: string) =>
   name
@@ -114,22 +116,16 @@ const initialComments: UiComment[] = [
 ];
 
 const CommunitySection = () => {
-  const [comments, setComments] = useState<UiComment[]>(initialComments);
+  const [comments, setComments] = useState<UiComment[]>(hasFirebase ? [] : initialComments);
   const [inputValue, setInputValue] = useState('');
   const [name, setName] = useState('');
   const [role, setRole] = useState('');
-  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [submitError, setSubmitError] = useState('');
   const [isLoadingComments, setIsLoadingComments] = useState(hasFirebase);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (ev) => setAvatarPreview(ev.target?.result as string);
-    reader.readAsDataURL(file);
-  };
+  const commentLength = inputValue.length;
+  const remainingCharacters = MAX_COMMENT_LENGTH - commentLength;
+  const isOverLimit = commentLength > MAX_COMMENT_LENGTH;
 
   const header = useScrollAnimation();
   const feed = useScrollAnimation({ rootMargin: '0px 0px -40px 0px' });
@@ -153,7 +149,7 @@ const CommunitySection = () => {
           .map((doc) => ({ id: doc.id, row: doc.data() as FirestoreComment }))
           .filter((item) => hasRenderableContent(item.row))
           .map((item) => mapFirestoreCommentToUi(item.id, item.row));
-        setComments(liveComments.length > 0 ? liveComments : initialComments);
+        setComments(liveComments);
         setIsLoadingComments(false);
       },
       (error) => {
@@ -171,6 +167,11 @@ const CommunitySection = () => {
   const handleSubmit = async () => {
     if (!inputValue.trim() || !name.trim()) return;
 
+    if (isOverLimit) {
+      setSubmitError(`Your comment is too long. Please keep it within ${MAX_COMMENT_LENGTH} characters.`);
+      return;
+    }
+
     setSubmitError('');
 
     if (!hasFirebase || !firebaseDb) {
@@ -183,7 +184,7 @@ const CommunitySection = () => {
         name: name.trim(),
         role: role.trim() || '',
         message: inputValue.trim(),
-        avatarUrl: avatarPreview || '',
+        avatarUrl: '',
         createdAt: serverTimestamp(),
       });
     } catch (error) {
@@ -203,8 +204,6 @@ const CommunitySection = () => {
     setInputValue('');
     setName('');
     setRole('');
-    setAvatarPreview(null);
-    if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
   return (
@@ -260,6 +259,9 @@ const CommunitySection = () => {
             {isLoadingComments && (
               <p className="text-[#0B0F1A]/35 text-sm">Loading community comments...</p>
             )}
+            {!isLoadingComments && comments.length === 0 && hasFirebase && (
+              <p className="text-[#0B0F1A]/35 text-sm">No community comments yet. Be the first to share.</p>
+            )}
             {comments.map((comment) => (
               <div key={comment.id} className="flex gap-3">
                 <div className="w-11 h-11 rounded-full flex-shrink-0 mt-0.5 overflow-hidden">
@@ -294,28 +296,6 @@ const CommunitySection = () => {
           {/* Input Area */}
           <div className="border-t border-[#0B0F1A]/6 px-6 py-4 space-y-3 bg-white">
             <div className="flex gap-3 items-center">
-              {/* Avatar upload */}
-              <button
-                type="button"
-                onClick={() => fileInputRef.current?.click()}
-                className="w-11 h-11 rounded-full flex-shrink-0 overflow-hidden border-2 border-dashed border-[#0B0F1A]/15 hover:border-[#0DC298]/50 transition-colors cursor-pointer bg-[#F8F9FF] flex items-center justify-center"
-                title="Upload your photo"
-              >
-                {avatarPreview ? (
-                  <img src={avatarPreview} alt="preview" className="w-full h-full object-cover object-top" />
-                ) : (
-                  <div className="w-5 h-5 flex items-center justify-center text-[#0B0F1A]/25">
-                    <i className="ri-camera-line text-base"></i>
-                  </div>
-                )}
-              </button>
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*"
-                onChange={handleAvatarChange}
-                className="hidden"
-              />
               <input
                 type="text"
                 value={name}
@@ -335,10 +315,17 @@ const CommunitySection = () => {
               <input
                 type="text"
                 value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
+                onChange={(e) => {
+                  const nextValue = e.target.value;
+                  setInputValue(nextValue);
+                  if (submitError) setSubmitError('');
+                }}
                 onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
-                placeholder="Share your voice..."
-                className="flex-1 bg-[#F8F9FF] border border-[#0B0F1A]/10 rounded-xl px-4 py-2.5 text-[#0B0F1A] text-sm placeholder-[#0B0F1A]/30 outline-none focus:border-[#3B82F6]/40 transition-colors"
+                placeholder={`Share your voice... (max ${MAX_COMMENT_LENGTH} characters)`}
+                maxLength={MAX_COMMENT_LENGTH}
+                className={`flex-1 bg-[#F8F9FF] border rounded-xl px-4 py-2.5 text-[#0B0F1A] text-sm placeholder-[#0B0F1A]/30 outline-none transition-colors ${
+                  isOverLimit ? 'border-red-400 focus:border-red-400' : 'border-[#0B0F1A]/10 focus:border-[#3B82F6]/40'
+                }`}
               />
               <button
                 onClick={handleSubmit}
@@ -346,6 +333,14 @@ const CommunitySection = () => {
               >
                 Share
               </button>
+            </div>
+            <div className="flex items-center justify-between gap-3 text-[11px] text-[#0B0F1A]/35">
+              <p>
+                Keep it under {MAX_COMMENT_LENGTH} characters, including spaces.
+              </p>
+              <p className={isOverLimit ? 'text-red-400' : remainingCharacters <= 30 ? 'text-[#2060C6]' : ''}>
+                {commentLength}/{MAX_COMMENT_LENGTH}
+              </p>
             </div>
             {submitError && <p className="text-red-400 text-xs">{submitError}</p>}
           </div>
