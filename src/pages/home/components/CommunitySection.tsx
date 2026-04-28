@@ -208,7 +208,7 @@ const CommunitySection = () => {
 
   return (
     <section id="community" className="relative bg-white py-24 px-6 overflow-hidden">
-      <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] rounded-full bg-[#0DC298]/5 blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-0 right-full w-[250px] h-[250px] md:w-[500px] md:h-[500px] rounded-full bg-[#0DC298]/5 blur-[120px] pointer-events-none md:right-1/4" />
 
       <div className="max-w-3xl mx-auto">
         {/* Header */}
@@ -280,12 +280,12 @@ const CommunitySection = () => {
                   )}
                 </div>
                 <div className="flex-1 bg-white rounded-2xl px-4 py-3 border border-[#0B0F1A]/6">
-                  <div className="flex items-center gap-2 mb-0.5">
+                  <div className="flex flex-col md:flex-row md:items-center gap-2 mb-0.5">
                     <span className="text-[#0B0F1A] text-sm font-medium">{comment.name}</span>
                     {comment.role && (
-                      <span className="text-[#0DC298] text-xs font-medium bg-[#0DC298]/8 rounded-full px-2 py-0.5">{comment.role}</span>
+                      <span className="text-[#0DC298] text-xs font-medium bg-[#0DC298]/8 rounded-full px-2 py-0.5 w-fit">{comment.role}</span>
                     )}
-                    <span className="text-[#0B0F1A]/25 text-xs ml-auto">{comment.time}</span>
+                    <span className="text-[#0B0F1A]/25 text-xs md:ml-auto">{comment.time}</span>
                   </div>
                   <p className="text-[#0B0F1A]/60 text-sm leading-relaxed">{comment.text}</p>
                 </div>
@@ -311,7 +311,7 @@ const CommunitySection = () => {
                 className="w-full md:flex-1 bg-[#F8F9FF] border border-[#0B0F1A]/10 rounded-xl px-4 py-2.5 text-[#0B0F1A] text-sm placeholder-[#0B0F1A]/30 outline-none focus:border-[#0DC298]/40 transition-colors"
               />
             </div>
-            <div className="flex gap-3">
+            <div className="flex flex-col md:flex-row gap-3">
               <input
                 type="text"
                 value={inputValue}
@@ -321,15 +321,15 @@ const CommunitySection = () => {
                   if (submitError) setSubmitError('');
                 }}
                 onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
-                placeholder={`Share your voice... (max ${MAX_COMMENT_LENGTH} characters)`}
+                placeholder={`Share your voice...`}
                 maxLength={MAX_COMMENT_LENGTH}
-                className={`flex-1 bg-[#F8F9FF] border rounded-xl px-4 py-2.5 text-[#0B0F1A] text-sm placeholder-[#0B0F1A]/30 outline-none transition-colors ${
+                className={`w-full md:flex-1 bg-[#F8F9FF] border rounded-xl px-4 py-2.5 text-[#0B0F1A] text-sm placeholder-[#0B0F1A]/30 outline-none transition-colors ${
                   isOverLimit ? 'border-red-400 focus:border-red-400' : 'border-[#0B0F1A]/10 focus:border-[#3B82F6]/40'
                 }`}
               />
               <button
                 onClick={handleSubmit}
-                className="bg-[#2060C6] hover:bg-[#1a4fa0] text-white font-semibold px-5 py-2.5 rounded-xl transition-all duration-200 cursor-pointer whitespace-nowrap text-sm"
+                className="w-full md:w-auto bg-[#2060C6] hover:bg-[#1a4fa0] text-white font-semibold px-5 py-2.5 rounded-xl transition-all duration-200 cursor-pointer whitespace-nowrap text-sm"
               >
                 Share
               </button>
