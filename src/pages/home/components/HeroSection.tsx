@@ -75,10 +75,10 @@ const HeroSection = () => {
           className={`text-5xl md:text-7xl lg:text-8xl font-light text-[#000B26] leading-tight mb-6 tracking-tight transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
           style={{ transitionDelay: '120ms' }}
         >
-          You are{' '}
-          <em className="not-italic text-[#2060C6] font-semibold">heard.</em>
+              Zero Signal,{' '}
+          <em className="not-italic text-[#2060C6] font-semibold">No network,</em>
           <br />
-          Help is already on the way.
+          Should not mean you're ALONE.
         </h1>
 
         {/* Subtext */}
