@@ -8,12 +8,12 @@ const mainTracks = [
     match: 'Primary',
     matchColor: '#2060C6',
     description:
-      'Echo is built for the exact scenario this track describes , offline, edge-based disaster response. When infrastructure fails and networks go dark, Echo\'s on-device AI keeps working. The 3-layer escalation protocol is designed to function in the most resource-constrained, connectivity-deprived environments imaginable.',
+      'Echo is built around resilient emergency response. The current demo keeps incident state and escalation timers local, while the architecture prepares a device model path for offline/on-device use once Android runtime testing is complete.',
     alignments: [
-      'Fully offline operation , no cloud dependency',
-      'Edge-based inference on consumer hardware',
+      'Local-first incident state and escalation timers',
+      'Prepared Gemma model download path for APK testing',
       'Designed for disaster and high-stress scenarios',
-      'Resilient alert delivery even in dead zones',
+      'Graceful fallback when AI or network services are unavailable',
     ],
   },
   {
@@ -23,12 +23,12 @@ const mainTracks = [
     match: 'Strong',
     matchColor: '#0DC298',
     description:
-      'Echo bridges the gap between human distress and data-driven response. The on-device AI continuously monitors for signs of danger, democratizing access to personal safety technology that was previously only available through expensive monitoring services or professional security systems.',
+      'Echo bridges the gap between distress and coordinated response. The demo uses voice or typed input, Gemma-assisted safety decisions, and a timed escalation loop to show how urgent signals can become structured action.',
     alignments: [
-      'AI-powered distress detection from audio signals',
+      'AI-assisted emergency triage from user requests',
       'Democratizes personal safety for all income levels',
       'Accelerates emergency response through intelligent triage',
-      'Continuous passive health & safety monitoring',
+      'Clear UI states for listening, thinking, speaking, and escalating',
     ],
   },
   {
@@ -38,10 +38,10 @@ const mainTracks = [
     match: 'Strong',
     matchColor: '#2060C6',
     description:
-      'Echo works on mid-range Android devices , no expensive hardware required. It functions without internet, making it accessible in underserved communities with poor connectivity. The intuitive interface is designed to be usable under extreme stress, removing barriers for users who need it most.',
+      'Echo is being designed for mid-range Android devices and low-connectivity communities. For submission, the reliable test surface is Chrome; the APK/model-download path is present for team testing and future validation.',
     alignments: [
-      'Runs on mid-range Android (no premium hardware)',
-      'Works without internet in underserved areas',
+      'Chrome-first demo for broad judge access',
+      'APK model catalog and compatibility messaging prepared',
       'Stress-tested UX for high-anxiety situations',
       'Closes the safety gap for vulnerable populations',
     ],
@@ -53,11 +53,11 @@ const mainTracks = [
     match: 'Strong',
     matchColor: '#0DC298',
     description:
-      'All AI inference happens on-device, your audio never leaves your phone without consent. Echo\'s distress classification model is explainable: it surfaces confidence scores and the specific audio features that triggered an alert. Privacy-first architecture means no surveillance, no data harvesting.',
+      'Echo makes cloud features explicit. The current demo can run core emergency state locally, while optional ElevenLabs and Telegram bridges are configured through local proxies and user-provided secrets.',
     alignments: [
-      'On-device inference, audio never sent to cloud',
-      'Explainable AI with confidence scoring',
-      'AES-256 encrypted local data store',
+      'Cloud voice and contact bridges are opt-in',
+      'Gemma output surfaces severity and suggested action',
+      'Local storage backs the demo feed and emergency state',
       'Transparent alert logic, no black-box decisions',
     ],
   },
@@ -71,8 +71,8 @@ const specialTracks = [
     color: '#0DC298',
     org: 'Special Technology',
     description:
-      'Echo is a local-first mobile application that intelligently routes tasks between models. Simple distress classification stays fully on-device. Complex multi-turn pattern analysis can optionally route to an edge model. This is exactly the Cactus architecture, local-first, intelligent routing.',
-    fit: 'Primary Target',
+      'Echo explored Cactus-style local-first routing, but the final demo intentionally avoids web-breaking native inference dependencies. Runtime adapters keep Android/on-device work isolated from the Chrome path.',
+    fit: 'Explored',
     fitColor: '#0DC298',
   },
   {
@@ -82,8 +82,8 @@ const specialTracks = [
     color: '#2060C6',
     org: 'Special Technology',
     description:
-      'Echo uses llama.cpp + GGUF quantization for optimized Gemma 4 inference. Currently deployed as a server backend (2-3 second response time). The architecture is designed to scale to on-device deployment via Android NDK + LiteRT in production, demonstrating both current feasibility and mobile-ready optimization.',
-    fit: 'Secondary',
+      'Echo uses llama.cpp + GGUF quantization for the local Gemma demo path. It is currently deployed as a local server backend, with the app prepared to expose model download and compatibility options for later device runtime validation.',
+    fit: 'Current Runtime',
     fitColor: '#000B26',
   },
 ];

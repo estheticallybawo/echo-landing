@@ -101,7 +101,7 @@ const initialComments: UiComment[] = [
     gradient: 'from-[#0DC298] to-[#2060C6]',
     avatar: 'https://readdy.ai/api/search-image?query=african%20man%20community%20organizer%20friendly%20portrait%20natural%20light%20simple%20background%20warm%20expression%20photo%20realistic&width=80&height=80&seq=comm4&orientation=squarish',
     time: '22 min ago',
-    text: 'The offline capability is a game changer for rural communities. So many safety apps are useless without internet.',
+    text: 'The local-first safety flow is a game changer for rural communities. So many safety apps freeze when the network gets unreliable.',
   },
   {
     id: 5,

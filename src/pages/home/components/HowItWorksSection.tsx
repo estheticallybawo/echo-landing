@@ -10,12 +10,12 @@ const layers = [
     bgColor: 'bg-[#2060C6]/4',
     icon: 'ri-user-heart-line',
     items: [
-      'Alerts trusted contacts instantly',
-      'Shares live location + audio stream',
-      'Receives confirmation of awareness',
+      'Starts the Tier 1 alert path',
+      'Shares demo location context and incident summary',
+      'Receives SAFE, HELP, or CALL responses',
     ],
     description:
-      "The moment Echo detects distress, your closest trusted contacts are notified immediately, with your location and a live audio feed. They confirm they've received the alert.",
+      "When Echo detects high-risk language or the user asks for help, the demo can notify a trusted contact through the Telegram bridge with the incident summary and last-known location context.",
   },
   {
     number: '02',
@@ -26,12 +26,12 @@ const layers = [
     bgColor: 'bg-[#0DC298]/4',
     icon: 'ri-alarm-warning-line',
     items: [
-      "Triggered if inner circle doesn't respond",
-      'Wider trusted network is notified',
-      'Attention and urgency increases',
+      "Triggered if Tier 1 doesn't resolve",
+      'Backup contact path is notified',
+      'Timeline and Echo Feed state update',
     ],
     description:
-      "If your inner circle doesn't respond within a set window, Echo automatically escalates, reaching a wider network of trusted people. The signal grows louder, not quieter.",
+      "If the first contact path does not mark the user safe, Echo escalates on a timer. The demo keeps the alert visible and repeatable so the response loop is easy to show end to end.",
   },
   {
     number: '03',
@@ -42,12 +42,12 @@ const layers = [
     bgColor: 'bg-[#2060C6]/4',
     icon: 'ri-broadcast-line',
     items: [
-      'Final escalation to public layer',
-      'Community and social awareness activated',
-      'Maximum visibility for maximum safety',
+      'Final escalation to the Echo Feed',
+      'Local community awareness layer activated',
+      'Incident stays visible until marked safe',
     ],
     description:
-      'As a last resort, Echo activates a public signal , alerting the broader community. No one is left in silence. The system keeps escalating until help arrives.',
+      'As a last resort, Echo posts to the Echo Feed, showing how a private distress signal can become a wider community signal when closer contacts do not respond.',
   },
 ];
 
@@ -72,7 +72,7 @@ const HowItWorksSection = () => {
           <h2 className="text-[#0B0F1A] text-4xl md:text-5xl font-semibold mt-6 mb-4 leading-tight">
             A 3-Layer Protocol
             <br />
-            <span className="text-[#0B0F1A]/35 font-light">that never gives up</span>
+            <span className="text-[#0B0F1A]/35 font-light">that keeps moving</span>
           </h2>
           <p className="text-[#0B0F1A]/45 text-base max-w-xl mx-auto">
             Echo doesn't just send one alert. It keeps escalating until someone responds, because your safety is non-negotiable.
@@ -142,8 +142,8 @@ const HowItWorksSection = () => {
             <i className="ri-wifi-off-line text-[#2060C6]"></i>
           </div>
           <p className="text-[#0B0F1A]/60 text-sm">
-            <span className="text-[#0B0F1A] font-medium">Runs offline using on-device AI</span>
-            {' '}, Syncs automatically when connection returns
+            <span className="text-[#0B0F1A] font-medium">Emergency state is local-first</span>
+            {' '}, online bridges add Telegram and natural voice when available
           </p>
         </div>
       </div>

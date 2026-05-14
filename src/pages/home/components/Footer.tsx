@@ -13,7 +13,7 @@ const Footer = () => {
               />
             </div>
             <p className="text-white/30 text-sm leading-relaxed">
-              A personal safety AI that listens, understands, and activates help, ensuring no one is ever alone in a moment of danger.
+              A personal safety AI that listens, understands context, and turns distress into a coordinated response flow.
             </p>
             <p className="text-[#0DC298] text-xs font-medium tracking-widest">#EchoCommunity</p>
           </div>

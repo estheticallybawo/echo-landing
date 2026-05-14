@@ -86,7 +86,7 @@ const HeroSection = () => {
           className={`text-[#000B26]/50 text-lg md:text-xl max-w-2xl leading-relaxed mb-10 transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
           style={{ transitionDelay: '240ms' }}
         >
-          Echo is a personal safety AI that listens, understands, and activates help instantly, turning a one-way cry for help into a two-way system of response, confirmation, and community action.
+          Echo is a personal safety AI that listens, understands context, and starts a coordinated help flow, turning a one-way cry for help into a two-way system of response, confirmation, and community action.
         </p>
 
         {/* Feature Pills */}
@@ -96,8 +96,8 @@ const HeroSection = () => {
         >
           {[
             { icon: 'ri-mic-line', label: 'Listens for you' },
-            { icon: 'ri-wifi-off-line', label: 'Works offline' },
-            { icon: 'ri-group-line', label: 'Notifies your circle' },
+            { icon: 'ri-wifi-off-line', label: 'Local-first demo' },
+            { icon: 'ri-group-line', label: 'Telegram bridge ready' },
             { icon: 'ri-shield-line', label: 'Activates help quietly' },
           ].map((pill) => (
             <div

@@ -12,9 +12,9 @@ const features = [
   },
   {
     icon: 'ri-wifi-off-line',
-    title: 'Works Without Internet',
+    title: 'Local-First When It Matters',
     description:
-      "On-device AI means Echo functions even in remote areas, underground, or when networks are jammed. Your safety doesn't depend on a signal.",
+      'Emergency state and escalation timers keep moving locally. Online services such as Telegram, ElevenLabs, and model downloads enhance the experience when available.',
     color: '#0DC298',
     bg: 'bg-[#0DC298]/5',
     border: 'border-[#0DC298]/12',
@@ -23,7 +23,7 @@ const features = [
     icon: 'ri-lock-password-line',
     title: 'Privacy-First AI',
     description:
-      "Your data stays on your device. Echo processes audio locally, nothing is stored or sent to servers without your explicit consent.",
+      'Echo is designed to minimize sharing by default. Cloud voice, Telegram contact messages, and saved audio snippets are explicit demo choices rather than hidden background behavior.',
     color: '#2060C6',
     bg: 'bg-[#2060C6]/5',
     border: 'border-[#2060C6]/12',

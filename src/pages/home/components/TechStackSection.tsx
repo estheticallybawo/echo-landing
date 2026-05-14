@@ -3,56 +3,86 @@ import { useScrollAnimation, useStaggerAnimation } from '@/hooks/useScrollAnimat
 const inferenceStack = [
   {
     layer: '01',
-    label: 'Model Layer',
-    title: 'Gemma 4 (2B)',
-    subtitle: 'via LiteRT / llama.cpp',
-    icon: 'ri-cpu-line',
+    label: 'Demo Layer',
+    title: 'Flutter + Chrome',
+    subtitle: 'voice UI and fast iteration',
+    icon: 'ri-computer-line',
     color: '#2060C6',
     description:
-      'Quantized Gemma 4 2B runs entirely on-device using Google AI Edge\'s LiteRT runtime. INT4/INT8 quantization keeps the model under 1.5 GB , fast enough for real-time distress classification on mid-range Android hardware.',
-    tags: ['LiteRT', 'INT4 Quant', 'Gemma 4 2B', 'llama.cpp fallback'],
+      'The submission demo runs in Chrome from the Flutter app. The voice SOS flow captures a short request, shows listening/thinking/speaking states, and keeps typed fallback available for reliability.',
+    tags: ['Flutter Web', 'Chrome STT', 'Voice SOS', 'Typed fallback'],
   },
   {
     layer: '02',
-    label: 'Inference Layer',
-    title: 'On-Device Pipeline',
-    subtitle: 'Audio → Embedding → Classification',
-    icon: 'ri-sound-module-line',
+    label: 'Gemma Layer',
+    title: 'Local llama.cpp Runtime',
+    subtitle: 'transcript to Gemma response',
+    icon: 'ri-terminal-box-line',
     color: '#0DC298',
     description:
-      'Raw microphone audio is chunked into 2-second windows, converted to mel-spectrograms, and passed through a lightweight encoder. The Gemma model classifies distress signals with <200ms latency , no cloud round-trip required.',
-    tags: ['Mel Spectrogram', '<200ms Latency', 'Streaming Inference', 'No Cloud'],
+      'For the web demo, Echo sends text transcripts to a local llama.cpp server running Gemma. Direct WAV understanding is supported as an experimental opt-in path, but the fast path is transcript-first for responsiveness.',
+    tags: ['Gemma', 'llama.cpp', 'Local server', 'JSON decisions'],
   },
   {
     layer: '03',
-    label: 'Routing Layer',
-    title: 'Intelligent Task Router',
-    subtitle: 'Local-first with edge fallback',
+    label: 'Safety Layer',
+    title: 'Escalation Engine',
+    subtitle: 'timer-based response loop',
     icon: 'ri-route-line',
     color: '#2060C6',
     description:
-      'Echo uses a Cactus-style local-first routing architecture. Simple classification stays fully on-device. Complex context analysis (e.g. multi-turn distress patterns) can optionally route to a lightweight edge model when connectivity is available.',
-    tags: ['Local-First', 'Edge Routing', 'Cactus Architecture', 'Adaptive'],
+      'High or critical Gemma outputs, plus direct user requests for help, route into the emergency flow. The timers keep escalating even when AI or network services are slow.',
+    tags: ['Tier 1', 'Tier 2', 'Echo Feed', 'Graceful fallback'],
   },
   {
     layer: '04',
-    label: 'Sync Layer',
-    title: 'Offline Sync Engine',
-    subtitle: 'Queue → Compress → Sync',
+    label: 'Bridge Layer',
+    title: 'Local Feed + Telegram',
+    subtitle: 'demo-ready contact loop',
     icon: 'ri-refresh-line',
     color: '#0DC298',
     description:
-      'All alerts, location snapshots, and audio clips are queued locally in an encrypted SQLite store. When connectivity returns, the sync engine replays the queue in chronological order , ensuring no alert is ever lost, even in dead zones.',
-    tags: ['SQLite Queue', 'Encrypted Store', 'Auto-Replay', 'Zero Data Loss'],
+      'Incident state is kept locally with Hive-compatible storage and reflected in the Echo Feed. A local Telegram bridge can send Tier 1/Tier 2 messages and read SAFE, HELP, or CALL replies.',
+    tags: ['Hive local state', 'Telegram bot', 'Echo Feed', 'Contact replies'],
   },
 ];
 
 const archDiagram = [
-  { id: 'mic', label: 'Microphone', icon: 'ri-mic-line', color: '#2060C6', x: 'left' },
-  { id: 'encoder', label: 'Audio Encoder', icon: 'ri-equalizer-line', color: '#0DC298', x: 'center-left' },
-  { id: 'gemma', label: 'Gemma 4 2B', icon: 'ri-brain-line', color: '#2060C6', x: 'center', highlight: true },
-  { id: 'router', label: 'Task Router', icon: 'ri-route-line', color: '#0DC298', x: 'center-right' },
-  { id: 'alert', label: 'Alert Engine', icon: 'ri-alarm-warning-line', color: '#2060C6', x: 'right' },
+  { id: 'mic', label: 'Voice SOS', icon: 'ri-mic-line', color: '#2060C6' },
+  { id: 'transcript', label: 'Transcript', icon: 'ri-chat-voice-line', color: '#0DC298' },
+  { id: 'gemma', label: 'Local Gemma', icon: 'ri-brain-line', color: '#2060C6', highlight: true },
+  { id: 'router', label: 'Safety Decision', icon: 'ri-route-line', color: '#0DC298' },
+  { id: 'alert', label: 'Feed + Bridge', icon: 'ri-alarm-warning-line', color: '#2060C6' },
+];
+
+const demoStates = [
+  { state: 'Alert Triggered', icon: 'ri-alarm-warning-line', color: '#2060C6', active: true },
+  { state: 'Saved Locally', icon: 'ri-database-2-line', color: '#0DC298', active: true },
+  { state: 'AI Unavailable', icon: 'ri-wifi-off-line', color: '#000B26', active: false },
+  { state: 'Timer Continues', icon: 'ri-timer-line', color: '#2060C6', active: true },
+  { state: 'Bridge Syncs', icon: 'ri-refresh-line', color: '#0DC298', active: true },
+  { state: 'Replies Received', icon: 'ri-user-received-line', color: '#2060C6', active: true },
+];
+
+const fallbackDetails = [
+  {
+    icon: 'ri-database-2-line',
+    color: '#2060C6',
+    title: 'Local Incident State',
+    desc: 'The demo records emergency state locally so the Echo Feed can update even when external services are unavailable.',
+  },
+  {
+    icon: 'ri-plug-line',
+    color: '#0DC298',
+    title: 'Optional Online Bridges',
+    desc: 'ElevenLabs and Telegram improve the demo when configured, but Echo falls back to browser TTS and local UI state when they are down.',
+  },
+  {
+    icon: 'ri-download-cloud-line',
+    color: '#2060C6',
+    title: 'Isolated Model Download Path',
+    desc: 'The settings flow exposes compatible Gemma model options for APK testing without pulling Android-only AI dependencies into the web build.',
+  },
 ];
 
 const TechStackSection = () => {
@@ -63,12 +93,10 @@ const TechStackSection = () => {
 
   return (
     <section id="tech-stack" className="relative bg-[#F8F9FF] py-24 px-6 overflow-hidden">
-      {/* Background glows */}
       <div className="absolute top-20 right-0 w-[600px] h-[600px] rounded-full bg-[#2060C6]/5 blur-[140px] pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full bg-[#0DC298]/5 blur-[120px] pointer-events-none" />
 
       <div className="max-w-5xl mx-auto">
-        {/* Header */}
         <div
           ref={header.ref}
           className={`text-center mb-16 transition-all duration-700 ${header.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
@@ -77,25 +105,23 @@ const TechStackSection = () => {
             How Echo Was Built
           </span>
           <h2 className="text-[#000B26] text-4xl md:text-5xl font-semibold mt-6 mb-4 leading-tight">
-            On-Device AI,
+            Local-first demo,
             <br />
-            <span className="text-[#000B26]/30 font-light">no cloud required</span>
+            <span className="text-[#000B26]/30 font-light">on-device path prepared</span>
           </h2>
           <p className="text-[#000B26]/45 text-base max-w-2xl mx-auto">
-            Echo is built on Gemma 4 running entirely on your phone. The full inference pipeline , from raw audio to distress classification to alert dispatch , happens locally, in under 200ms.
+            Echo's current demo proves the safety experience in Chrome with a local Gemma server, local incident state, optional ElevenLabs voice, and an optional Telegram contact bridge. The APK/model-download path is isolated so future on-device runtime work does not break web testing.
           </p>
         </div>
 
-        {/* Architecture Diagram */}
         <div
           ref={arch.ref}
           className={`mb-16 bg-white border border-[#000B26]/8 rounded-3xl p-8 md:p-10 transition-all duration-700 ${arch.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
         >
           <p className="text-[#000B26]/35 text-xs font-semibold tracking-widest uppercase text-center mb-8">
-            Inference Pipeline
+            Demo Pipeline
           </p>
 
-          {/* Flow diagram */}
           <div className="flex flex-col md:flex-row items-center justify-between gap-3 md:gap-0">
             {archDiagram.map((node, idx) => (
               <div key={node.id} className="flex flex-col md:flex-row items-center gap-3 md:gap-0 w-full md:w-auto">
@@ -142,14 +168,13 @@ const TechStackSection = () => {
             ))}
           </div>
 
-          {/* Runtime badges */}
           <div className="mt-8 pt-6 border-t border-[#000B26]/6 flex flex-wrap items-center justify-center gap-3">
             {[
-              { icon: 'ri-android-line', label: 'Android 10+', color: '#2060C6' },
-              { icon: 'ri-cpu-line', label: 'LiteRT Runtime', color: '#0DC298' },
-              { icon: 'ri-lock-line', label: 'Fully On-Device', color: '#2060C6' },
-              { icon: 'ri-timer-line', label: '<200ms Latency', color: '#0DC298' },
-              { icon: 'ri-wifi-off-line', label: 'Offline-First', color: '#2060C6' },
+              { icon: 'ri-computer-line', label: 'Chrome Demo', color: '#2060C6' },
+              { icon: 'ri-terminal-box-line', label: 'llama.cpp', color: '#0DC298' },
+              { icon: 'ri-database-2-line', label: 'Hive Local State', color: '#2060C6' },
+              { icon: 'ri-telegram-line', label: 'Telegram Bridge', color: '#0DC298' },
+              { icon: 'ri-download-cloud-line', label: 'APK Model Path', color: '#2060C6' },
             ].map((badge) => (
               <div
                 key={badge.label}
@@ -164,7 +189,6 @@ const TechStackSection = () => {
           </div>
         </div>
 
-        {/* Stack Cards */}
         <div ref={stackRef} className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-12">
           {inferenceStack.map((item, idx) => (
             <div
@@ -174,7 +198,6 @@ const TechStackSection = () => {
               }`}
               style={{ transitionDelay: `${idx * 80}ms` }}
             >
-              {/* Top row */}
               <div className="flex items-start justify-between mb-4">
                 <div
                   className="w-11 h-11 rounded-xl flex items-center justify-center"
@@ -196,7 +219,6 @@ const TechStackSection = () => {
               <p className="text-[#000B26]/35 text-xs mb-3 font-medium">{item.subtitle}</p>
               <p className="text-[#000B26]/50 text-sm leading-relaxed mb-5">{item.description}</p>
 
-              {/* Tags */}
               <div className="flex flex-wrap gap-2">
                 {item.tags.map((tag) => (
                   <span
@@ -216,26 +238,17 @@ const TechStackSection = () => {
           ))}
         </div>
 
-        {/* Offline Sync Architecture Detail */}
         <div
           ref={finePrint.ref}
           className={`bg-white border border-[#000B26]/8 rounded-3xl p-8 md:p-10 transition-all duration-700 delay-200 ${finePrint.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
         >
           <div className="flex flex-col md:flex-row gap-8 items-start">
-            {/* Left: Offline sync visual */}
             <div className="flex-shrink-0 w-full md:w-56">
               <p className="text-[#000B26]/30 text-xs font-semibold tracking-widest uppercase mb-5">
-                Sync State Machine
+                Demo State Machine
               </p>
               <div className="space-y-3">
-                {[
-                  { state: 'Alert Triggered', icon: 'ri-alarm-warning-line', color: '#2060C6', active: true },
-                  { state: 'Queued Locally', icon: 'ri-database-2-line', color: '#0DC298', active: true },
-                  { state: 'Offline Mode', icon: 'ri-wifi-off-line', color: '#000B26', active: false },
-                  { state: 'Connection Returns', icon: 'ri-wifi-line', color: '#2060C6', active: true },
-                  { state: 'Queue Replayed', icon: 'ri-refresh-line', color: '#0DC298', active: true },
-                  { state: 'Contacts Notified', icon: 'ri-user-received-line', color: '#2060C6', active: true },
-                ].map((step, i) => (
+                {demoStates.map((step, i) => (
                   <div key={step.state} className="flex items-center gap-3">
                     <div className="flex flex-col items-center">
                       <div
@@ -252,7 +265,7 @@ const TechStackSection = () => {
                           ></i>
                         </div>
                       </div>
-                      {i < 5 && (
+                      {i < demoStates.length - 1 && (
                         <div
                           className="w-px h-3 mt-1"
                           style={{ backgroundColor: step.active ? `${step.color}20` : '#000B2608' }}
@@ -270,38 +283,17 @@ const TechStackSection = () => {
               </div>
             </div>
 
-            {/* Divider */}
             <div className="hidden md:block w-px self-stretch bg-[#000B26]/6"></div>
 
-            {/* Right: Description */}
             <div className="flex-1">
               <h3 className="text-[#000B26] text-2xl font-semibold mb-3">
-                Offline Sync Architecture
+                Graceful Degradation Architecture
               </h3>
               <p className="text-[#000B26]/50 text-sm leading-relaxed mb-6">
-                Echo is designed for the real world , where networks fail, signals drop, and disasters knock out infrastructure. The offline sync engine ensures that every alert, location ping, and audio clip is preserved locally and delivered the moment connectivity returns.
+                Echo is designed for stressful demos and stressful real-world use: if one capability is unavailable, the rest of the safety flow still moves. Local state, manual triggers, and timer-based escalation do not depend on perfect AI, perfect speech recognition, or perfect network access.
               </p>
               <div className="space-y-4">
-                {[
-                  {
-                    icon: 'ri-database-2-line',
-                    color: '#2060C6',
-                    title: 'Encrypted SQLite Queue',
-                    desc: 'All events are written to an AES-256 encrypted local database before any network attempt.',
-                  },
-                  {
-                    icon: 'ri-archive-line',
-                    color: '#0DC298',
-                    title: 'Delta Compression',
-                    desc: 'Location and audio payloads are compressed before queuing , minimizing storage and burst bandwidth on reconnect.',
-                  },
-                  {
-                    icon: 'ri-refresh-line',
-                    color: '#2060C6',
-                    title: 'Idempotent Replay',
-                    desc: 'Each queued event has a unique ID. Replaying the queue is safe , duplicates are automatically deduplicated on the receiving end.',
-                  },
-                ].map((item) => (
+                {fallbackDetails.map((item) => (
                   <div key={item.title} className="flex items-start gap-4">
                     <div
                       className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5"

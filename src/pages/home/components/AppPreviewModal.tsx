@@ -191,9 +191,9 @@ const AppPreviewModal = ({ isOpen, onClose }: AppPreviewModalProps) => {
 
             <div className="space-y-3">
               {[
-                { icon: 'ri-wifi-off-line', text: 'Works fully offline' },
-                { icon: 'ri-lock-line', text: 'On-device AI, private by default' },
-                { icon: 'ri-flashlight-line', text: 'Activates in under 2 seconds' },
+                { icon: 'ri-wifi-off-line', text: 'Local-first emergency state' },
+                { icon: 'ri-lock-line', text: 'Cloud features are opt-in' },
+                { icon: 'ri-flashlight-line', text: 'Timer-based escalation' },
               ].map((f) => (
                 <div key={f.text} className="flex items-center gap-3 text-white/40 text-xs">
                   <div className="w-4 h-4 flex items-center justify-center">
