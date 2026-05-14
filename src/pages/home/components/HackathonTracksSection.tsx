@@ -8,11 +8,11 @@ const mainTracks = [
     match: 'Primary',
     matchColor: '#2060C6',
     description:
-      'Echo is built around resilient emergency response. The current demo keeps incident state and escalation timers local, while the architecture prepares a device model path for offline/on-device use once Android runtime testing is complete.',
+      'Echo is built around resilient missing-person prevention and emergency response. The current demo keeps incident state and escalation timers local, while the architecture prepares a device model path for offline/on-device use once Android runtime testing is complete.',
     alignments: [
       'Local-first incident state and escalation timers',
       'Prepared Gemma model download path for APK testing',
-      'Designed for disaster and high-stress scenarios',
+      'Designed for missing-person and high-stress scenarios',
       'Graceful fallback when AI or network services are unavailable',
     ],
   },
@@ -23,11 +23,11 @@ const mainTracks = [
     match: 'Strong',
     matchColor: '#0DC298',
     description:
-      'Echo bridges the gap between distress and coordinated response. The demo uses voice or typed input, Gemma-assisted safety decisions, and a timed escalation loop to show how urgent signals can become structured action.',
+      'Echo bridges the gap between early distress and coordinated response. The demo uses voice or typed input, Gemma-assisted safety decisions, and a timed escalation loop to show how urgent signals can become structured action.',
     alignments: [
-      'AI-assisted emergency triage from user requests',
-      'Democratizes personal safety for all income levels',
-      'Accelerates emergency response through intelligent triage',
+      'AI-assisted context summaries from user requests',
+      'Democratizes early missing-person support',
+      'Accelerates response through structured triage',
       'Clear UI states for listening, thinking, speaking, and escalating',
     ],
   },
@@ -38,12 +38,12 @@ const mainTracks = [
     match: 'Strong',
     matchColor: '#2060C6',
     description:
-      'Echo is being designed for mid-range Android devices and low-connectivity communities. For submission, the reliable test surface is Chrome; the APK/model-download path is present for team testing and future validation.',
+      'Echo is being designed for mid-range Android devices and low-connectivity communities where formal support and public data can be fragmented. For submission, the reliable test surface is Chrome; the APK/model-download path is present for team testing and future validation.',
     alignments: [
       'Chrome-first demo for broad judge access',
       'APK model catalog and compatibility messaging prepared',
       'Stress-tested UX for high-anxiety situations',
-      'Closes the safety gap for vulnerable populations',
+      'Helps communities amplify one clear signal',
     ],
   },
   {

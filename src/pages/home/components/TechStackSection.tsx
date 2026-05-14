@@ -9,8 +9,8 @@ const inferenceStack = [
     icon: 'ri-computer-line',
     color: '#2060C6',
     description:
-      'The submission demo runs in Chrome from the Flutter app. The voice SOS flow captures a short request, shows listening/thinking/speaking states, and keeps typed fallback available for reliability.',
-    tags: ['Flutter Web', 'Chrome STT', 'Voice SOS', 'Typed fallback'],
+      'The submission demo runs in Chrome from the Flutter app. Voice SOS or typed fallback captures the early warning signal before it becomes a scattered missing-person post.',
+    tags: ['Flutter Web', 'Chrome STT', 'Voice SOS', 'Early signal'],
   },
   {
     layer: '02',
@@ -20,8 +20,8 @@ const inferenceStack = [
     icon: 'ri-terminal-box-line',
     color: '#0DC298',
     description:
-      'For the web demo, Echo sends text transcripts to a local llama.cpp server running Gemma. Direct WAV understanding is supported as an experimental opt-in path, but the fast path is transcript-first for responsiveness.',
-    tags: ['Gemma', 'llama.cpp', 'Local server', 'JSON decisions'],
+      'For the web demo, Echo sends transcripts to a local llama.cpp server running Gemma. Gemma turns messy distress language into structured severity, summary, reply, and next action.',
+    tags: ['Gemma', 'llama.cpp', 'Context summary', 'JSON decisions'],
   },
   {
     layer: '03',
@@ -31,8 +31,8 @@ const inferenceStack = [
     icon: 'ri-route-line',
     color: '#2060C6',
     description:
-      'High or critical Gemma outputs, plus direct user requests for help, route into the emergency flow. The timers keep escalating even when AI or network services are slow.',
-    tags: ['Tier 1', 'Tier 2', 'Echo Feed', 'Graceful fallback'],
+      'High or critical Gemma outputs, plus direct user requests for help, route into the escalation flow. Timers keep moving so delay does not bury the signal.',
+    tags: ['Tier 1', 'Tier 2', 'Echo Feed', 'No silent delay'],
   },
   {
     layer: '04',
@@ -42,8 +42,8 @@ const inferenceStack = [
     icon: 'ri-refresh-line',
     color: '#0DC298',
     description:
-      'Incident state is kept locally with Hive-compatible storage and reflected in the Echo Feed. A local Telegram bridge can send Tier 1/Tier 2 messages and read SAFE, HELP, or CALL replies.',
-    tags: ['Hive local state', 'Telegram bot', 'Echo Feed', 'Contact replies'],
+      'Incident state is kept locally and reflected in the Echo Feed. A local Telegram bridge can send Tier 1/Tier 2 messages and read SAFE, HELP, or CALL replies.',
+    tags: ['Local state', 'Telegram bot', 'Echo Feed', 'Contact replies'],
   },
 ];
 
@@ -69,7 +69,7 @@ const fallbackDetails = [
     icon: 'ri-database-2-line',
     color: '#2060C6',
     title: 'Local Incident State',
-    desc: 'The demo records emergency state locally so the Echo Feed can update even when external services are unavailable.',
+    desc: 'The demo records emergency state locally so the Echo Feed can preserve the alert timeline even when external services are unavailable.',
   },
   {
     icon: 'ri-plug-line',
@@ -110,7 +110,7 @@ const TechStackSection = () => {
             <span className="text-[#000B26]/30 font-light">on-device path prepared</span>
           </h2>
           <p className="text-[#000B26]/45 text-base max-w-2xl mx-auto">
-            Echo's current demo proves the safety experience in Chrome with a local Gemma server, local incident state, optional ElevenLabs voice, and an optional Telegram contact bridge. The APK/model-download path is isolated so future on-device runtime work does not break web testing.
+            Echo's current demo proves the missing-person prevention flow in Chrome with a local Gemma server, local incident state, optional ElevenLabs voice, and an optional Telegram contact bridge. The APK/model-download path is isolated so future on-device runtime work does not break web testing.
           </p>
         </div>
 
@@ -290,7 +290,7 @@ const TechStackSection = () => {
                 Graceful Degradation Architecture
               </h3>
               <p className="text-[#000B26]/50 text-sm leading-relaxed mb-6">
-                Echo is designed for stressful demos and stressful real-world use: if one capability is unavailable, the rest of the safety flow still moves. Local state, manual triggers, and timer-based escalation do not depend on perfect AI, perfect speech recognition, or perfect network access.
+                Echo is designed for the imperfect moments where missing-person response often starts: weak signal, unclear context, worried contacts, and incomplete information. If one capability is unavailable, the rest of the flow still moves through local state, manual triggers, and timer-based escalation.
               </p>
               <div className="space-y-4">
                 {fallbackDetails.map((item) => (

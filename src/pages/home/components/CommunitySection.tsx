@@ -71,7 +71,7 @@ const initialComments: UiComment[] = [
     gradient: 'from-[#2060C6] to-[#1a4fa0]',
     avatar: 'https://readdy.ai/api/search-image?query=young%20african%20woman%20university%20student%20smiling%20natural%20light%20warm%20tones%20simple%20clean%20background%20portrait%20photo%20realistic&width=80&height=80&seq=comm1&orientation=squarish',
     time: '2 min ago',
-    text: "This is exactly what we needed. I've been scared to walk home alone for years. Echo gives me real hope.",
+    text: "This is exactly what we needed. When someone goes quiet, families should not have to start from screenshots and panic.",
   },
   {
     id: 2,
@@ -81,7 +81,7 @@ const initialComments: UiComment[] = [
     gradient: 'from-[#0DC298] to-[#0aa882]',
     avatar: 'https://readdy.ai/api/search-image?query=young%20african%20man%20software%20engineer%20professional%20headshot%20neutral%20background%20confident%20smile%20portrait%20photo%20realistic&width=80&height=80&seq=comm2&orientation=squarish',
     time: '8 min ago',
-    text: 'The 3-layer escalation system is brilliant. Most apps just send one notification and hope for the best. Echo keeps going.',
+    text: 'The 3-layer escalation system is brilliant. It turns one worried message into a response loop people can actually follow.',
   },
   {
     id: 3,
@@ -91,7 +91,7 @@ const initialComments: UiComment[] = [
     gradient: 'from-[#2060C6] to-[#0DC298]',
     avatar: 'https://readdy.ai/api/search-image?query=african%20woman%20nurse%20practitioner%20warm%20smile%20professional%20portrait%20soft%20light%20clean%20background%20photo%20realistic&width=80&height=80&seq=comm3&orientation=squarish',
     time: '15 min ago',
-    text: 'I shared this with my sister who travels for work. She cried. We both did. Thank you for building this.',
+    text: 'The Echo Feed idea matters. One structured alert that everyone can amplify is stronger than ten incomplete posts.',
   },
   {
     id: 4,
@@ -101,7 +101,7 @@ const initialComments: UiComment[] = [
     gradient: 'from-[#0DC298] to-[#2060C6]',
     avatar: 'https://readdy.ai/api/search-image?query=african%20man%20community%20organizer%20friendly%20portrait%20natural%20light%20simple%20background%20warm%20expression%20photo%20realistic&width=80&height=80&seq=comm4&orientation=squarish',
     time: '22 min ago',
-    text: 'The local-first safety flow is a game changer for rural communities. So many safety apps freeze when the network gets unreliable.',
+    text: 'The local-first safety flow is important for rural communities. Response should not disappear just because the network is unreliable.',
   },
   {
     id: 5,
@@ -111,7 +111,7 @@ const initialComments: UiComment[] = [
     gradient: 'from-[#2060C6] to-[#0DC298]',
     avatar: 'https://readdy.ai/api/search-image?query=african%20woman%20journalist%20professional%20headshot%20confident%20expression%20clean%20background%20soft%20lighting%20portrait%20photo%20realistic&width=80&height=80&seq=comm5&orientation=squarish',
     time: '31 min ago',
-    text: "Hiny's story broke my heart. I'm glad something meaningful is being built in her memory. #EchoCommunity",
+    text: 'Missing-person alerts cross my timeline almost every week. Echo feels like a way to organize that urgency before it is too late.',
   },
 ];
 
@@ -223,7 +223,7 @@ const CommunitySection = () => {
             What people are saying
           </h2>
           <p className="text-[#0B0F1A]/45 text-base">
-            Real voices from people who believe in Echo's mission.
+            Voices from people who believe missing-person response should be faster, clearer, and more collective.
           </p>
         </div>
 

@@ -45,13 +45,13 @@ const ClosingSection = () => {
             style={{ transitionDuration: '800ms' }}
           >
             <h2 className="text-white text-4xl md:text-5xl lg:text-6xl font-light leading-tight mb-6 tracking-tight">
-              No one should face
+              No signal should
               <br />
-              <em className="not-italic text-[#2060C6] font-semibold">fear alone.</em>
+              <em className="not-italic text-[#2060C6] font-semibold">fade alone.</em>
             </h2>
 
             <p className="text-white/40 text-base md:text-lg max-w-xl mb-10 leading-relaxed mx-auto lg:mx-0">
-              Join the Echo community and be part of a movement that believes every voice deserves to be heard, and every call for help deserves an answer.
+              Join the Echo community and help build a world where possible missing-person signals become structured support, trusted action, and responsible amplification.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 mb-10 justify-center lg:justify-start">
@@ -112,7 +112,7 @@ const ClosingSection = () => {
                 Follow us on X
               </a>
               <p className="text-white/25 text-[11px] leading-snug max-w-[260px] text-center lg:text-left">
-                Stay updated &amp; help amplify every Echo case, your follow matters.
+                Stay updated and help amplify every verified Echo signal.
               </p>
             </div>
 
@@ -129,9 +129,9 @@ const ClosingSection = () => {
 
             <div className="flex gap-6 mt-4">
               {[
-                { value: '3-Layer', label: 'Protocol' },
-                { value: '<10s', label: 'Response' },
-                { value: '100%', label: 'Offline' },
+                { value: '3-Tier', label: 'Escalation' },
+                { value: 'Local', label: 'State' },
+                { value: 'Feed', label: 'Amplify' },
               ].map((stat) => (
                 <div key={stat.label} className="text-center">
                   <p className="text-white text-base font-semibold">{stat.value}</p>

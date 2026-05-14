@@ -4,10 +4,10 @@ import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 const timelineEvents = [
   { time: 'T+0s', label: 'Trigger activated', icon: 'ri-record-circle-line', color: '#2060C6' },
-  { time: 'T+1-5s', label: 'Transcript and Gemma decision', icon: 'ri-brain-line', color: '#2060C6' },
-  { time: 'T+5s', label: 'Tier 1 contact path', icon: 'ri-group-line', color: '#0DC298' },
+  { time: 'T+1-5s', label: 'Context summary created', icon: 'ri-brain-line', color: '#2060C6' },
+  { time: 'T+5s', label: 'Trusted contact alert', icon: 'ri-group-line', color: '#0DC298' },
   { time: 'T+15s', label: 'Tier 2 escalation', icon: 'ri-alarm-warning-line', color: '#0DC298' },
-  { time: 'T+25s', label: 'Echo Feed activated', icon: 'ri-broadcast-line', color: '#0DC298' },
+  { time: 'T+25s', label: 'Echo Feed amplification', icon: 'ri-broadcast-line', color: '#0DC298' },
 ];
 
 const DemoSection = () => {
@@ -63,7 +63,7 @@ const DemoSection = () => {
               See Echo in Action
             </h2>
             <p className="text-[#000B26]/50 text-base max-w-lg mx-auto">
-              Watch the demo flow from voice trigger to local Gemma decision, contact bridge, and Echo Feed escalation.
+              Watch the demo flow from early distress signal to Gemma summary, trusted-contact alert, contact feedback, and Echo Feed amplification.
             </p>
           </div>
 

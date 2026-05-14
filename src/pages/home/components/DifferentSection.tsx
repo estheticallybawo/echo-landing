@@ -3,9 +3,9 @@ import { useScrollAnimation, useStaggerAnimation } from '@/hooks/useScrollAnimat
 const features = [
   {
     icon: 'ri-heart-pulse-line',
-    title: 'Gentle by Design',
+    title: 'Before The Report',
     description:
-      "Echo is built to feel like a calm, trusted friend , not a surveillance tool. Every interaction is designed to reduce anxiety, not add to it.",
+      'Echo is designed for the moment before a person is officially missing, when a small signal, a last-known location, or a worried message can still change the timeline.',
     color: '#2060C6',
     bg: 'bg-[#2060C6]/5',
     border: 'border-[#2060C6]/12',
@@ -14,25 +14,25 @@ const features = [
     icon: 'ri-wifi-off-line',
     title: 'Local-First When It Matters',
     description:
-      'Emergency state and escalation timers keep moving locally. Online services such as Telegram, ElevenLabs, and model downloads enhance the experience when available.',
+      'Emergency state and escalation timers keep moving locally. Online bridges add contact alerts, replies, and amplification when available.',
     color: '#0DC298',
     bg: 'bg-[#0DC298]/5',
     border: 'border-[#0DC298]/12',
   },
   {
     icon: 'ri-lock-password-line',
-    title: 'Privacy-First AI',
+    title: 'Structured Context',
     description:
-      'Echo is designed to minimize sharing by default. Cloud voice, Telegram contact messages, and saved audio snippets are explicit demo choices rather than hidden background behavior.',
+      'Gemma helps turn messy speech into a clear summary: what happened, where the person was last known, who should be contacted, and what action is needed next.',
     color: '#2060C6',
     bg: 'bg-[#2060C6]/5',
     border: 'border-[#2060C6]/12',
   },
   {
     icon: 'ri-community-line',
-    title: 'Built Around Real Human Response',
+    title: 'Built For Amplification',
     description:
-      "Technology alone doesn't save lives, people do. Echo is designed to activate real humans in your life, not just send automated alerts.",
+      'When private contacts do not respond, Echo Feed creates a share-ready signal so communities can amplify the same facts instead of fragmented posts.',
     color: '#0DC298',
     bg: 'bg-[#0DC298]/5',
     border: 'border-[#0DC298]/12',
@@ -61,7 +61,7 @@ const DifferentSection = () => {
             <em className="not-italic text-[#0DC298]">human</em>
           </h2>
           <p className="text-[#0B0F1A]/45 text-base max-w-xl mx-auto">
-            Most safety apps are reactive. Echo is proactive, intelligent, and built around the way real people actually help each other.
+            Echo is not just a panic button. It is a response loop for the fragile window where someone may be becoming unreachable, unsafe, or missing.
           </p>
         </div>
 

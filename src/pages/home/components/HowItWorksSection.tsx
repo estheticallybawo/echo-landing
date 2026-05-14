@@ -11,11 +11,11 @@ const layers = [
     icon: 'ri-user-heart-line',
     items: [
       'Starts the Tier 1 alert path',
-      'Shares demo location context and incident summary',
+      'Shares last-known context and incident summary',
       'Receives SAFE, HELP, or CALL responses',
     ],
     description:
-      "When Echo detects high-risk language or the user asks for help, the demo can notify a trusted contact through the Telegram bridge with the incident summary and last-known location context.",
+      "When Echo detects high-risk language or the user asks for help, the demo can notify a trusted contact with a concise summary, last-known location context, and a reply path.",
   },
   {
     number: '02',
@@ -27,11 +27,11 @@ const layers = [
     icon: 'ri-alarm-warning-line',
     items: [
       "Triggered if Tier 1 doesn't resolve",
-      'Backup contact path is notified',
+      'Backup network is notified',
       'Timeline and Echo Feed state update',
     ],
     description:
-      "If the first contact path does not mark the user safe, Echo escalates on a timer. The demo keeps the alert visible and repeatable so the response loop is easy to show end to end.",
+      "If the first contact path does not mark the user safe, Echo escalates on a timer. The goal is to prevent a possible missing-person signal from staying trapped in one private chat.",
   },
   {
     number: '03',
@@ -43,11 +43,11 @@ const layers = [
     icon: 'ri-broadcast-line',
     items: [
       'Final escalation to the Echo Feed',
-      'Local community awareness layer activated',
-      'Incident stays visible until marked safe',
+      'Share-ready community signal created',
+      'Status stays visible until marked safe',
     ],
     description:
-      'As a last resort, Echo posts to the Echo Feed, showing how a private distress signal can become a wider community signal when closer contacts do not respond.',
+      'As a last resort, Echo posts to the Echo Feed, showing how one structured alert can be amplified responsibly across a community instead of being rebuilt from scattered screenshots.',
   },
 ];
 
@@ -75,7 +75,7 @@ const HowItWorksSection = () => {
             <span className="text-[#0B0F1A]/35 font-light">that keeps moving</span>
           </h2>
           <p className="text-[#0B0F1A]/45 text-base max-w-xl mx-auto">
-            Echo doesn't just send one alert. It keeps escalating until someone responds, because your safety is non-negotiable.
+            Echo turns a possible missing-person signal into a response loop: trusted people first, wider support next, community amplification if silence continues.
           </p>
         </div>
 
@@ -143,7 +143,7 @@ const HowItWorksSection = () => {
           </div>
           <p className="text-[#0B0F1A]/60 text-sm">
             <span className="text-[#0B0F1A] font-medium">Emergency state is local-first</span>
-            {' '}, online bridges add Telegram and natural voice when available
+            {' '}, online bridges add contact alerts, replies, and natural voice when available
           </p>
         </div>
       </div>

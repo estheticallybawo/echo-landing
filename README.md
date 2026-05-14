@@ -1,6 +1,6 @@
 # Echo Landing Page
 
-React + TypeScript landing page for Echo, built for the Gemma 4 Good Hackathon. The site presents Echo as a local-first safety assistant that turns a distress signal into a coordinated response flow.
+React + TypeScript landing page for Echo, built for the Gemma 4 Good Hackathon. The site presents Echo as a local-first safety assistant for missing-person prevention, trusted-contact escalation, and community amplification.
 
 ## Current Product Story
 
@@ -9,6 +9,7 @@ Echo's reliable submission path is the Flutter Chrome demo:
 - Voice SOS or typed fallback captures the user's request.
 - Gemma runs through a local `llama.cpp` server for safety reasoning.
 - The emergency flow escalates through Tier 1, Tier 2, and the Echo Feed.
+- The Echo Feed frames unresolved alerts as share-ready community signals instead of scattered screenshots.
 - Optional local bridges add ElevenLabs speech and Telegram contact replies.
 - The APK/model download path is prepared for teammate testing, but on-device Gemma inference is future validation work.
 

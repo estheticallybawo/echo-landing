@@ -13,12 +13,12 @@ const versions = [
     title: 'The Chrome Demo + App Shell',
     tagline: 'Safety flow you can test',
     description:
-      'Echo v1 demonstrates the core safety loop: voice SOS, Gemma-assisted decisions, timer-based escalation, a local Echo Feed, optional ElevenLabs voice, and optional Telegram contact replies.',
+      'Echo v1 demonstrates the missing-person prevention loop: voice SOS, Gemma-assisted context summaries, timer-based escalation, a local Echo Feed, optional ElevenLabs voice, and optional Telegram contact replies.',
     features: [
-      'Local llama.cpp Gemma runtime',
+      'Local llama.cpp Gemma reasoning',
       '3-layer escalation protocol',
       'Local-first incident state',
-      'Model download path for APK testing',
+      'Share-ready Echo Feed path',
     ],
   },
   {
@@ -33,10 +33,10 @@ const versions = [
     title: 'Platform Integration',
     tagline: 'Safety embedded everywhere',
     description:
-      'Echo v2 opens its core safety engine as an SDK and API layer, enabling other apps, platforms, and services to embed Echo\'s intelligence directly. From ride-sharing to healthcare, any product can become Echo-powered.',
+      'Echo v2 opens its core safety engine as an SDK and API layer, enabling other apps, platforms, and services to embed Echo\'s response loop directly. From campuses to transport communities, any product can become Echo-powered.',
     features: [
       'Open SDK & API for third-party apps',
-      'Plug-in safety layer for existing platforms',
+      'Plug-in response layer for existing platforms',
       'Cross-app trusted contact sync',
       'Enterprise & developer partnerships',
     ],
