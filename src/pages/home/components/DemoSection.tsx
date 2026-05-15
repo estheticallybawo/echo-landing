@@ -10,6 +10,107 @@ const timelineEvents = [
   { time: 'T+25s', label: 'Echo Feed amplification', icon: 'ri-broadcast-line', color: '#0DC298' },
 ];
 
+type VideoCard = {
+  label: string;
+  title: string;
+  description: string;
+  source?: string;
+  poster?: string;
+  accent: string;
+};
+
+const videoCards: VideoCard[] = [
+  {
+    label: 'Functional demo',
+    title: 'Echo product demo',
+    description:
+      'The recorded walkthrough of Echo handling voice input, Gemma reasoning, escalation state, contact response, and Echo Feed amplification.',
+    source: import.meta.env.VITE_ECHO_DEMO_VIDEO_URL || 'https://youtu.be/eruqiCivAdI?si=hrxRDNEg_QRfVq_B',
+    poster: import.meta.env.VITE_ECHO_DEMO_VIDEO_POSTER,
+    accent: '#2060C6',
+  },
+  {
+    label: 'Promo film',
+    title: 'Why Echo exists',
+    description:
+      'A short story-led video for judges who want the motivation, missing-person framing, and future vision beyond the timed demo.',
+    source: import.meta.env.VITE_ECHO_PROMO_VIDEO_URL || 'https://youtu.be/KXp-jS2ec20',
+    poster: import.meta.env.VITE_ECHO_PROMO_VIDEO_POSTER,
+    accent: '#0DC298',
+  },
+];
+
+const normalizeEmbedUrl = (source: string) => {
+  if (source.includes('youtube.com/embed/') || source.includes('player.vimeo.com/video/')) return source;
+
+  try {
+    const url = new URL(source);
+    if (url.hostname.includes('youtu.be')) {
+      return `https://www.youtube.com/embed/${url.pathname.replace('/', '')}`;
+    }
+    if (url.hostname.includes('youtube.com')) {
+      const id = url.searchParams.get('v');
+      return id ? `https://www.youtube.com/embed/${id}` : source;
+    }
+    if (url.hostname.includes('vimeo.com')) {
+      const id = url.pathname.split('/').filter(Boolean).pop();
+      return id ? `https://player.vimeo.com/video/${id}` : source;
+    }
+  } catch {
+    return source;
+  }
+
+  return source;
+};
+
+const isDirectVideo = (source: string) => /\.(mp4|webm|ogg)(\?.*)?$/i.test(source);
+
+const VideoEmbed = ({ video }: { video: VideoCard }) => {
+  if (!video.source) {
+    return (
+      <div className="aspect-video flex items-center justify-center bg-[#000B26] text-white p-8">
+        <div className="max-w-sm text-center">
+          <div
+            className="w-14 h-14 rounded-full mx-auto mb-5 flex items-center justify-center"
+            style={{ backgroundColor: `${video.accent}22`, color: video.accent }}
+          >
+            <i className="ri-movie-2-line text-2xl" />
+          </div>
+          <p className="text-lg font-semibold mb-2">Promo video slot ready</p>
+          <p className="text-white/50 text-sm leading-relaxed">
+            Add VITE_ECHO_PROMO_VIDEO_URL to swap this promo film without changing code.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (isDirectVideo(video.source)) {
+    return (
+      <video
+        controls
+        playsInline
+        preload="metadata"
+        poster={video.poster}
+        className="w-full h-full object-cover bg-[#000B26]"
+      >
+        <source src={video.source} />
+        Your browser does not support embedded video playback.
+      </video>
+    );
+  }
+
+  return (
+    <iframe
+      src={normalizeEmbedUrl(video.source)}
+      title={video.title}
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowFullScreen
+      className="w-full h-full bg-[#000B26]"
+    />
+  );
+};
+
 const DemoSection = () => {
   const [activeNode, setActiveNode] = useState(0);
   const [running, setRunning] = useState(false);
@@ -50,8 +151,7 @@ const DemoSection = () => {
       <section id="demo" className="relative bg-[#F8F9FF] py-24 px-6 overflow-hidden">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full bg-[#0DC298]/6 blur-[140px] pointer-events-none" />
 
-        <div className="max-w-4xl mx-auto">
-          {/* Header */}
+        <div className="max-w-5xl mx-auto">
           <div
             ref={header.ref}
             className={`text-center mb-12 transition-all duration-700 ${header.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
@@ -60,31 +160,40 @@ const DemoSection = () => {
               Demo Experience
             </span>
             <h2 className="text-[#000B26] text-4xl md:text-5xl font-semibold mt-6 mb-4">
-              See Echo in Action
+              Watch Echo from story to system
             </h2>
-            <p className="text-[#000B26]/50 text-base max-w-lg mx-auto">
-              Watch the demo flow from early distress signal to Gemma summary, trusted-contact alert, contact feedback, and Echo Feed amplification.
+            <p className="text-[#000B26]/50 text-base max-w-2xl mx-auto">
+              The demo video shows the working flow. The promo video gives judges the motivation, missing-person framing, and the parts that could not fit into the timed presentation.
             </p>
           </div>
 
-          {/* Video Embed */}
           <div
             ref={video.ref}
-            className={`relative rounded-3xl overflow-hidden border border-[#000B26]/8 mb-12 bg-[#000B26]/5 transition-all duration-800 ${video.isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}
+            className={`grid lg:grid-cols-2 gap-6 mb-12 transition-all duration-800 ${video.isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}
             style={{ transitionDuration: '800ms' }}
           >
-            <div className="aspect-video">
-              <iframe
-                src="https://www.youtube.com/embed/X1TeMtL94aw"
-                title="Echo Demo"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                className="w-full h-full"
-              />
-            </div>
+            {videoCards.map((item) => (
+              <article
+                key={item.title}
+                className="overflow-hidden rounded-3xl border border-[#000B26]/8 bg-white shadow-[0_24px_80px_rgba(0,11,38,0.08)]"
+              >
+                <div className="aspect-video overflow-hidden bg-[#000B26]">
+                  <VideoEmbed video={item} />
+                </div>
+                <div className="p-6">
+                  <span
+                    className="inline-flex rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-widest"
+                    style={{ backgroundColor: `${item.accent}14`, color: item.accent }}
+                  >
+                    {item.label}
+                  </span>
+                  <h3 className="mt-4 text-xl font-semibold text-[#000B26]">{item.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-[#000B26]/55">{item.description}</p>
+                </div>
+              </article>
+            ))}
           </div>
 
-          {/* Timeline Simulation */}
           <div
             ref={timeline.ref}
             className={`bg-white border border-[#000B26]/8 rounded-3xl p-8 md:p-10 mb-8 transition-all duration-700 delay-100 ${timeline.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
@@ -107,7 +216,6 @@ const DemoSection = () => {
               </button>
             </div>
 
-            {/* Desktop Timeline */}
             <div className="hidden md:block relative">
               <div className="absolute top-6 left-0 right-0 h-px bg-gray-200" />
               <div
@@ -143,7 +251,6 @@ const DemoSection = () => {
               </div>
             </div>
 
-            {/* Mobile Timeline */}
             <div className="md:hidden space-y-4">
               {timelineEvents.map((event, idx) => (
                 <div
@@ -166,7 +273,6 @@ const DemoSection = () => {
             </div>
           </div>
 
-          {/* Preview App CTA */}
           <div
             ref={cta.ref}
             className={`text-center transition-all duration-700 delay-200 ${cta.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
