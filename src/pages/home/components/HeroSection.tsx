@@ -76,9 +76,9 @@ const HeroSection = () => {
           style={{ transitionDelay: '120ms' }}
         >
               Every desperate cry For HELP{' '}
-          <em className="not-italic text-[#2060C6] font-semibold">No network,</em>
+          <em className="not-italic text-[#2060C6] font-semibold">Deserves</em>
           <br />
-          Deserves the urgency it NEEDS
+           the urgency it NEEDS
         </h1>
 
         {/* Subtext */}
