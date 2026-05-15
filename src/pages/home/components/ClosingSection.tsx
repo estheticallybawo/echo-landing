@@ -45,9 +45,9 @@ const ClosingSection = () => {
             style={{ transitionDuration: '800ms' }}
           >
             <h2 className="text-white text-4xl md:text-5xl lg:text-6xl font-light leading-tight mb-6 tracking-tight">
-              Zero signal, No Network
+              Because every cry for help,
               <br />
-              <em className="not-italic text-[#2060C6] font-semibold">should not mean you're alone.</em>
+              <em className="not-italic text-[#2060C6] font-semibold">Deserves the urgency it NEEDS</em>
             </h2>
 
             <p className="text-white/40 text-base md:text-lg max-w-xl mb-10 leading-relaxed mx-auto lg:mx-0">
